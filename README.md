@@ -1,70 +1,200 @@
-# Getting Started with Create React App
+# Runes Recognition Project: QA Guide and Setup Instructions
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of Contents
 
-## Available Scripts
+1. Project Overview
+2. Setup Instructions
+   - Backend Setup
+   - Frontend Setup
+3. Running the Application
+4. Testing Instructions
+5. QA Checklist
+6. Troubleshooting Guide
 
-In the project directory, you can run:
+## 1. Project Overview
 
-### `npm start`
+The Runes Recognition project is a web application that allows users to upload, manage, and recognize rune images. It consists of a FastAPI backend and a React frontend.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Key Features:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- User registration and authentication
+- Rune image upload and management
+- Rune recognition using image processing techniques
+- Admin functionality for user management
 
-### `npm test`
+The Runes Recognition project consists of two separate applications:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Backend API (FastAPI)
+2. Frontend Web Application (React)
 
-### `npm run build`
+## 2. Setup Instructions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Backend Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the backend repository:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```
+   git clone <backend_repo_url>
+   cd runes_recognition_backend
+   ```
 
-### `npm run eject`
+2. Create and activate a virtual environment:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Install dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   ```
+   pip install -r requirements.txt
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Set up the database:
 
-## Learn More
+   ```
+   alembic upgrade head
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5. Start the backend server:
+   ```
+   uvicorn main:app --reload
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The backend will be available at `http://localhost:8000`.
 
-### Code Splitting
+### Frontend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Clone the frontend repository:
 
-### Analyzing the Bundle Size
+   ```
+   git clone <frontend_repo_url>
+   cd runes_recognition_frontend
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Install dependencies:
 
-### Making a Progressive Web App
+   ```
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. Start the development server:
+   ```
+   npm start
+   ```
 
-### Advanced Configuration
+The frontend will be available at `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 4. Testing Instructions
 
-### Deployment
+### Backend Testing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
+cd runes_recognition_backend
+pytest
+```
 
-### `npm run build` fails to minify
+### Frontend Testing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+cd runes_recognition_frontend
+npm test
+```
+
+### Manual Testing
+
+Use the Postman collection provided to test backend endpoints. For frontend testing, follow the QA checklist below.
+
+## 5. QA Checklist
+
+### User Authentication
+
+- [ ] User can register with a unique username and email
+- [ ] User can log in with correct credentials
+- [ ] User cannot log in with incorrect credentials
+- [ ] User can log out
+- [ ] Authenticated user can access protected routes
+- [ ] Unauthenticated user is redirected to login page for protected routes
+
+### Rune Management
+
+- [ ] User can view a list of their runes
+- [ ] User can create a new rune by uploading an image and providing a linked URL
+- [ ] User can edit the linked URL of an existing rune
+- [ ] User can delete their own rune
+- [ ] Pagination works correctly in the rune list
+- [ ] Rune list displays correct total count
+
+### Admin Functionality
+
+- [ ] Admin can view a list of all users
+- [ ] Admin can change a user's role
+- [ ] Admin can view and manage all runes
+
+### Rune Recognition
+
+- [ ] System correctly processes uploaded rune images
+- [ ] System can match a rune image to existing runes in the database
+- [ ] System returns appropriate similarity scores for matched runes
+
+### Error Handling
+
+- [ ] Appropriate error messages are displayed for invalid inputs
+- [ ] Server errors are handled gracefully and informative messages are shown to the user
+
+### Performance
+
+- [ ] Pages load within acceptable time limits
+- [ ] Rune recognition process completes within acceptable time limits
+
+### Responsiveness
+
+- [ ] Application is usable on desktop browsers
+- [ ] Application is usable on mobile devices (especially iPhone 12)
+
+## 6. Troubleshooting Guide
+
+### Backend Issues
+
+1. **Database connection errors**
+
+   - Ensure the database URL in `database.py` is correct
+   - Check if the database server is running
+
+2. **Missing dependencies**
+
+   - Run `pip install -r requirements.txt` to ensure all dependencies are installed
+
+3. **Alembic migration errors**
+   - Ensure you've run `alembic upgrade head`
+   - Check alembic version table in the database
+
+### Frontend Issues
+
+1. **npm install fails**
+
+   - Clear npm cache: `npm cache clean --force`
+   - Delete `node_modules` folder and `package-lock.json`, then run `npm install` again
+
+2. **API calls failing**
+
+   - Check if the backend server is running
+   - Ensure the API base URL in the frontend code is correct
+
+3. **Authentication issues**
+   - Check if the JWT token is being stored correctly in localStorage
+   - Ensure the token is being sent with API requests
+
+### Rune Recognition Issues
+
+1. **Recognition accuracy is low**
+
+   - Review the feature extraction process in `hog_extractor.py`
+   - Consider adjusting parameters or trying different feature extraction methods
+
+2. **Image processing errors**
+   - Ensure uploaded images are in supported formats (PNG, JPEG)
+   - Check if the image processing library (OpenCV) is correctly installed
+
+If issues persist, please check the application logs for more detailed error messages.
